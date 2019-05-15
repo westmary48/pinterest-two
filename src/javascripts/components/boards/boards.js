@@ -1,6 +1,7 @@
 import util from '../../helpers/util';
 import boardData from '../../helpers/data/boardsData';
 import pins from '../pins/pins';
+import pinsData from '../../helpers/data/pinsData';
 
 const seePinDiv = (e) => {
   const boardId = e.target.closest('.card').id;
@@ -24,7 +25,7 @@ const writeBoards = (boards) => {
     domString += `<div id='${board.id}' class="card p-2">`;
     domString += '<div class="card-body">';
     domString += `<h5 class="card-title">${board.name}</h5>`;
-    domString += '<button class="btn btn-warning see-pins">Pins</button>';
+    domString += `<button class="btn btn-warning see-pins">${board.pins.length} Pins</button>`;
     domString += '</div>';
     domString += '</div>';
     domString += '</div>';
@@ -35,10 +36,11 @@ const writeBoards = (boards) => {
 
 const initBoards = () => {
   boardData.loadBoards()
-    .then((resp) => {
-      writeBoards(resp.data.boards);
+    .then(resp => pinsData.getPinsForEachBoard(resp.data.boards))
+    .then((boardsWithPins) => {
+      writeBoards(boardsWithPins);
     })
-    .catch(err => console.error('error from loadBoards', err));
+    .catch(err => console.error('error from initBoards requests', err));
 };
 
 export default { initBoards };

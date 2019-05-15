@@ -1,3 +1,8 @@
 import '../styles/main.scss';
+import boards from './components/boards/boards';
 
-console.error('HELLO');
+const init = () => {
+  boards.initBoards();
+};
+
+init();
